@@ -1,3 +1,8 @@
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.Reader;
 
 public class ToDoClass
 {
@@ -40,4 +45,30 @@ public class ToDoClass
     {
         return this.id;
     }
+
+    public JSONObject ToJson()
+    {
+        JSONObject json = new JSONObject();
+        json.put("Title", this.GetTitle());
+        json.put("Description", this.GetDesc());
+
+        return json;
+    }
+
+    static public ToDoClass FromJson(Reader jsonData)
+    {
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject  jsonObj = (JSONObject) parser.parse(jsonData);
+            String Title = (String) jsonObj.get("Title");
+            String Description = (String) jsonObj.get("Description");
+
+            return new ToDoClass(Title, Description);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return null;
+        }
+    }
+
 }

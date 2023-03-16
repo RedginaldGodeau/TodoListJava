@@ -1,15 +1,18 @@
+import org.json.simple.JSONArray;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 public class Main
 {
     public static void main(String[] args)
     {
-
-
         ArrayList<ToDoClass> ToDoList = new ArrayList<ToDoClass>();
+
         Scanner scan = new Scanner(System.in);
         boolean loop = true;
-
         int action;
 
         while (loop)
@@ -52,6 +55,21 @@ public class Main
                     System.out.println("------------------------------");
                     break;
             }
+        }
+
+        JSONArray save = new JSONArray();
+        for (int i = 0; i < ToDoList.size(); i++)
+            save.add(ToDoList.get(i).ToJson());
+
+        FileWriter file;
+
+        try {
+            file = new FileWriter("data.json");
+            file.write(save.toJSONString());
+            file.flush();
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         System.out.println("Bye :)");
